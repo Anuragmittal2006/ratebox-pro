@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>RateBox Pro</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+
+  <div class="title">
+    RateBox Pro
+  </div>
+
+  <div class="mode-switch">
+    <button id="normalMode" class="active">Search</button>
+    <button id="compareMode">Compare</button>
+  </div>
+
+  <div id="supplierTabs" class="supplier-tabs"></div>
+
+  <div id="compareSelectors" class="compare-selectors hidden">
+    <select id="compareA"></select>
+    <select id="compareB"></select>
+  </div>
+
+  <div class="search-box">
+    <input
+      id="search"
+      placeholder="Search tyre size..."
+    />
+  </div>
+
+</header>
+
+<main id="results"></main>
+
+<script src="app.js"></script>
+
+</body>
+</html>

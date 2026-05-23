@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Excel To JSON Converter</title>
+
+  <style>
+    body{
+      font-family:system-ui;
+      background:#f1f5f9;
+      padding:30px;
+      max-width:700px;
+      margin:auto;
+    }
+
+    h1{
+      margin-bottom:20px;
+    }
+
+    input,
+    button{
+      width:100%;
+      padding:14px;
+      margin-top:12px;
+      border-radius:10px;
+      border:1px solid #cbd5e1;
+      font-size:16px;
+    }
+
+    button{
+      background:#2563eb;
+      color:white;
+      border:none;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .log{
+      margin-top:20px;
+      background:white;
+      padding:14px;
+      border-radius:10px;
+      white-space:pre-wrap;
+      font-size:14px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Excel → Supplier JSON Converter</h1>
+
+<input
+  type="text"
+  id="supplierName"
+  placeholder="Supplier Name"
+/>
+
+<input
+  type="file"
+  id="file"
+/>
+
+<button id="convertBtn">
+  Convert Excel To JSON
+</button>
+
+<div class="log" id="log">
+Waiting for file...
+</div>
+
+<script src="../libs/xlsx.full.min.js"></script>
+
+<script>
+
+const log = document.getElementById("log");
+
+function writeLog(text){
+  log.innerText = text;
+}
+
+function normalize(str){
+
+  return (str || "")
+    .toString()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g,"");
+
+}
+
+function createCompareKey(size){
+
+  return normalize(size)
+    .replace(/tt/g,"")
+    .replace(/tl/g,"")
+    .replace(/[0-9]{2}[a-z]?$/,"");
+
+}
+
+function findValue(row, possibleNames){
+
+  const keys = Object.keys(row);
+
+  const foundKey = keys.find(key => {
+
+    const lower = key.toLowerCase();
+
+    return possibleNames.some(name =>
+      lower.includes(name)
+    );
+
+  });
+
+  return foundKey ? row[foundKey] : "";
+
+}
+
+document
+.getElementById("convertBtn")
+.onclick = async () => {
+
+  try{
+
+    const supplierName =
+      document
+      .getElementById("supplierName")
+      .value
+      .trim();
+
+    const file =
+      document
+      .getElementById("file")
+      .files[0];
+
+    if(!supplierName){
+
+      alert("Enter supplier name");
+
+      return;
+    }
+
+    if(!file){
+
+      alert("Choose excel file");
+
+      return;
+    }
+
+    writeLog("Reading Excel...");
+
+    const buffer =
+      await file.arrayBuffer();
+
+    const workbook =
+      XLSX.read(buffer);
+
+    const firstSheet =
+      workbook.Sheets[
+        workbook.SheetNames[0]
+      ];
+
+    const rows =
+      XLSX.utils.sheet_to_json(firstSheet);
+
+    console.log(rows);
+
+    writeLog(
+      "Rows Found: " + rows.length
+    );
+
+    const items = rows.map((row,index)=>{
+
+      const size = findValue(row,[
+        "size",
+        "description",
+        "pattern",
+        "tyre"
+      ]);
+
+      const invoice = findValue(row,[
+        "invoice",
+        "rate",
+        "net",
+        "price",
+        "amount"
+      ]);
+
+      const code = findValue(row,[
+        "code",
+        "item"
+      ]);
+
+      return {
+
+        code: code || "",
+
+        size: size || "",
+
+        invoice: Number(
+          String(invoice)
+            .replace(/,/g,"")
+            .replace(/[^\d.]/g,"")
+        ) || 0,
+
+        searchKey:
+          normalize(size),
+
+        compareKey:
+          createCompareKey(size)
+
+      };
+
+    });
+
+    const finalJson = {
+
+      suppliers: {
+
+        [normalize(supplierName)]: {
+
+          name: supplierName,
+
+          updated:
+            new Date().toISOString(),
+
+          items
+
+        }
+
+      }
+
+    };
+
+    const blob = new Blob(
+      [
+        JSON.stringify(
+          finalJson,
+          null,
+          2
+        )
+      ],
+      {
+        type:"application/json"
+      }
+    );
+
+    const a =
+      document.createElement("a");
+
+    a.href =
+      URL.createObjectURL(blob);
+
+    a.download =
+      supplierName + ".json";
+
+    a.click();
+
+    writeLog(
+      "Done ✅\n\n" +
+      "Total Items: " +
+      items.length
+    );
+
+  }catch(err){
+
+    console.error(err);
+
+    writeLog(
+      "ERROR:\n\n" + err
+    );
+
+  }
+
+};
+
+</script>
+
+</body>
+</html>

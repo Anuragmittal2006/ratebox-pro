@@ -1,0 +1,668 @@
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+:root{
+
+  --bg:#07111f;
+
+  --card:#0f172a;
+
+  --card2:#111c31;
+
+  --text:#f8fafc;
+
+  --muted:#94a3b8;
+
+  --green:#22c55e;
+
+  --cyan:#06b6d4;
+
+  --blue:#2563eb;
+
+  --border:rgba(255,255,255,0.08);
+
+}
+
+body{
+
+  font-family:
+  Inter,
+  system-ui,
+  sans-serif;
+
+  background:
+  radial-gradient(
+    circle at top left,
+    rgba(6,182,212,0.15),
+    transparent 30%
+  ),
+  radial-gradient(
+    circle at top right,
+    rgba(34,197,94,0.12),
+    transparent 30%
+  ),
+  linear-gradient(
+    180deg,
+    #07111f,
+    #020617
+  );
+
+  color:var(--text);
+
+  min-height:100vh;
+
+  overflow-x:hidden;
+
+}
+
+/* =========================
+   TOPBAR
+========================= */
+
+.topbar{
+
+  position:sticky;
+  top:0;
+
+  z-index:100;
+
+  padding:18px;
+
+  backdrop-filter:blur(20px);
+
+  background:
+  rgba(7,17,31,0.72);
+
+  border-bottom:
+  1px solid rgba(255,255,255,0.06);
+
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.title{
+
+  font-size:30px;
+
+  font-weight:800;
+
+  letter-spacing:0.5px;
+
+  background:
+  linear-gradient(
+    90deg,
+    #22c55e,
+    #06b6d4
+  );
+
+  -webkit-background-clip:text;
+
+  -webkit-text-fill-color:transparent;
+
+  text-shadow:
+  0 0 30px rgba(6,182,212,0.4);
+
+}
+
+/* =========================
+   MODE BUTTONS
+========================= */
+
+.mode-switch{
+
+  display:flex;
+
+  gap:12px;
+
+  margin-top:18px;
+
+}
+
+.mode-switch button{
+
+  flex:1;
+
+  border:none;
+
+  padding:14px;
+
+  border-radius:16px;
+
+  font-size:15px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  color:white;
+
+  transition:0.3s ease;
+
+  background:
+  linear-gradient(
+    135deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.02)
+  );
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+
+  backdrop-filter:blur(12px);
+
+}
+
+.mode-switch button:hover{
+
+  transform:
+  translateY(-2px);
+
+}
+
+.mode-switch .active{
+
+  background:
+  linear-gradient(
+    135deg,
+    #22c55e,
+    #06b6d4
+  );
+
+  box-shadow:
+  0 0 20px rgba(34,197,94,0.35),
+  0 0 40px rgba(6,182,212,0.22);
+
+}
+
+/* =========================
+   SUPPLIER TABS
+========================= */
+
+.supplier-tabs{
+
+  display:flex;
+
+  gap:10px;
+
+  overflow-x:auto;
+
+  margin-top:18px;
+
+  padding-bottom:4px;
+
+}
+
+.supplier-tabs::-webkit-scrollbar{
+  display:none;
+}
+
+.supplier-btn{
+
+  white-space:nowrap;
+
+  padding:11px 18px;
+
+  border-radius:999px;
+
+  cursor:pointer;
+
+  font-size:14px;
+
+  font-weight:700;
+
+  transition:0.28s ease;
+
+  color:#dbeafe;
+
+  border:
+  1px solid rgba(255,255,255,0.06);
+
+  background:
+  linear-gradient(
+    135deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.03)
+  );
+
+  backdrop-filter:blur(14px);
+
+}
+
+.supplier-btn:hover{
+
+  transform:
+  translateY(-2px);
+
+}
+
+.supplier-btn.active{
+
+  color:white;
+
+  background:
+  linear-gradient(
+    135deg,
+    #22c55e,
+    #06b6d4
+  );
+
+  box-shadow:
+  0 0 20px rgba(6,182,212,0.35),
+  0 0 35px rgba(34,197,94,0.22);
+
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box{
+
+  margin-top:18px;
+
+}
+
+.search-box input{
+
+  width:100%;
+
+  padding:16px 18px;
+
+  border-radius:18px;
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+
+  outline:none;
+
+  font-size:16px;
+
+  color:white;
+
+  background:
+  rgba(255,255,255,0.05);
+
+  backdrop-filter:blur(12px);
+
+  transition:0.3s ease;
+
+}
+
+.search-box input:focus{
+
+  border:
+  1px solid rgba(34,197,94,0.5);
+
+  box-shadow:
+  0 0 0 4px rgba(34,197,94,0.12),
+  0 0 30px rgba(6,182,212,0.15);
+
+}
+
+.search-box input::placeholder{
+
+  color:#94a3b8;
+
+}
+
+/* =========================
+   COMPARE SELECTORS
+========================= */
+
+.compare-selectors{
+
+  display:flex;
+
+  gap:10px;
+
+  margin-top:16px;
+
+}
+
+.compare-selectors select{
+
+  flex:1;
+
+  padding:14px;
+
+  border-radius:14px;
+
+  border:
+  1px solid rgba(255,255,255,0.08);
+
+  background:
+  rgba(255,255,255,0.05);
+
+  color:white;
+
+  outline:none;
+
+  backdrop-filter:blur(12px);
+
+}
+
+/* =========================
+   RESULTS
+========================= */
+
+#results{
+
+  padding:18px;
+
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card{
+
+  position:relative;
+
+  overflow:hidden;
+
+  background:
+  linear-gradient(
+    180deg,
+    rgba(15,23,42,0.94),
+    rgba(17,28,49,0.94)
+  );
+
+  border:
+  1px solid rgba(255,255,255,0.06);
+
+  border-radius:24px;
+
+  padding:18px;
+
+  margin-bottom:18px;
+
+  backdrop-filter:blur(20px);
+
+  transition:0.28s ease;
+
+  animation:fadeUp 0.35s ease;
+
+}
+
+.card::before{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+  linear-gradient(
+    135deg,
+    rgba(34,197,94,0.08),
+    rgba(6,182,212,0.06)
+  );
+
+  pointer-events:none;
+
+}
+
+.card:hover{
+
+  transform:
+  translateY(-4px);
+
+  border:
+  1px solid rgba(34,197,94,0.28);
+
+  box-shadow:
+  0 10px 40px rgba(6,182,212,0.12);
+
+}
+
+/* =========================
+   CHEAPEST
+========================= */
+
+.cheapest{
+
+  border:
+  1px solid rgba(34,197,94,0.55);
+
+  box-shadow:
+  0 0 25px rgba(34,197,94,0.18),
+  0 0 55px rgba(6,182,212,0.08);
+
+}
+
+.cheapest::after{
+
+  content:"BEST PRICE";
+
+  position:absolute;
+
+  top:14px;
+
+  right:-34px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #22c55e,
+    #06b6d4
+  );
+
+  color:white;
+
+  font-size:11px;
+
+  font-weight:800;
+
+  padding:6px 40px;
+
+  transform:
+  rotate(38deg);
+
+}
+
+/* =========================
+   TYRE NAME
+========================= */
+
+.tyre-name{
+
+  font-size:17px;
+
+  line-height:1.5;
+
+  font-weight:700;
+
+  color:#f8fafc;
+
+}
+
+/* =========================
+   PRICE
+========================= */
+
+.price{
+
+  margin-top:14px;
+
+  font-size:30px;
+
+  font-weight:800;
+
+  background:
+  linear-gradient(
+    90deg,
+    #22c55e,
+    #06b6d4
+  );
+
+  -webkit-background-clip:text;
+
+  -webkit-text-fill-color:transparent;
+
+  text-shadow:
+  0 0 18px rgba(6,182,212,0.22);
+
+}
+
+/* =========================
+   DETAILS
+========================= */
+
+.card div:last-child{
+
+  margin-top:12px;
+
+  color:var(--muted);
+
+  font-size:14px;
+
+}
+
+/* =========================
+   COMPARE CARD
+========================= */
+
+.compare-card{
+
+  display:grid;
+
+  grid-template-columns:
+  1.3fr
+  110px
+  110px;
+
+  gap:12px;
+
+  align-items:center;
+
+}
+
+.compare-price{
+
+  padding:14px;
+
+  border-radius:16px;
+
+  text-align:center;
+
+  font-weight:800;
+
+  font-size:18px;
+
+  background:
+  rgba(255,255,255,0.05);
+
+  border:
+  1px solid rgba(255,255,255,0.06);
+
+  backdrop-filter:blur(14px);
+
+}
+
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden{
+  display:none;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes fadeUp{
+
+  from{
+
+    opacity:0;
+
+    transform:
+    translateY(14px);
+
+  }
+
+  to{
+
+    opacity:1;
+
+    transform:
+    translateY(0);
+
+  }
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+  .compare-card{
+
+    grid-template-columns:
+    1fr;
+
+  }
+
+}
+/* =========================
+   COMPARE UI
+========================= */
+
+.compare-tyre{
+
+  font-size:15px;
+
+  font-weight:700;
+
+  line-height:1.5;
+
+}
+
+.supplier-label{
+
+  font-size:12px;
+
+  color:#94a3b8;
+
+  margin-bottom:8px;
+
+  font-weight:700;
+
+  letter-spacing:0.4px;
+
+  text-transform:uppercase;
+
+}
+
+.supplier-rate{
+
+  font-size:24px;
+
+  font-weight:800;
+
+  background:
+  linear-gradient(
+    90deg,
+    #22c55e,
+    #06b6d4
+  );
+
+  -webkit-background-clip:text;
+
+  -webkit-text-fill-color:transparent;
+
+}
