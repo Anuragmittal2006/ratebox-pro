@@ -11,6 +11,11 @@ const compareSelectors = document.getElementById("compareSelectors");
 const compareA = document.getElementById("compareA");
 const compareB = document.getElementById("compareB");
 
+const discountInput =
+document.getElementById(
+  "discountInput"
+);
+
 let data = {};
 let suppliers = [];
 
@@ -139,6 +144,11 @@ searchInput.addEventListener("input",render);
 compareA.addEventListener("change",render);
 compareB.addEventListener("change",render);
 
+discountInput.addEventListener(
+  "input",
+  render
+);
+
 function render(){
 
   const query = normalize(searchInput.value);
@@ -170,7 +180,10 @@ function renderNormal(query){
   const cheapest = Math.min(
     ...filtered.map(x=>x.invoice)
   );
-
+const discount =
+Number(
+  discountInput.value
+) || 0;
   filtered.forEach(item=>{
 
     const card = document.createElement("div");
@@ -181,16 +194,44 @@ function renderNormal(query){
       card.classList.add("cheapest");
     }
 
-    card.innerHTML = `
-      <div class="tyre-name">
-        ${item.size}
-      </div>
+   const discountedPrice = Math.round(
 
-      <div class="price">
-        ₹${item.invoice}
-      </div>
+  item.invoice -
 
-    `;
+  (item.invoice * discount / 100)
+
+);
+
+card.innerHTML = `
+
+  <div class="tyre-name">
+    ${item.size}
+  </div>
+
+  <div class="price">
+    ₹${item.invoice}
+  </div>
+
+  ${
+    discount > 0
+    ?
+
+    `
+    <div class="discounted-price">
+
+      Discounted:
+      ₹${discountedPrice}
+
+    </div>
+    `
+
+    :
+
+    ""
+
+  }
+
+`;
 
     results.appendChild(card);
 
@@ -205,6 +246,10 @@ function renderCompare(query){
 
   const map1 = {};
   const map2 = {};
+  const discount =
+Number(
+  discountInput.value
+) || 0;
 
   supplier1.items.forEach(x=>{
 
@@ -236,7 +281,21 @@ function renderCompare(query){
 
     card.className = "card compare-card";
 
-   card.innerHTML = `
+   const discountA = a
+? Math.round(
+    a.invoice -
+    (a.invoice * discount / 100)
+  )
+: null;
+
+const discountB = b
+? Math.round(
+    b.invoice -
+    (b.invoice * discount / 100)
+  )
+: null;
+
+card.innerHTML = `
 
   <div class="compare-tyre">
     ${a?.size || b?.size}
@@ -252,6 +311,21 @@ function renderCompare(query){
       ₹${a?.invoice || "-"}
     </div>
 
+    ${
+      discount > 0 && a
+      ?
+
+      `
+      <div class="compare-discount">
+        ₹${discountA}
+      </div>
+      `
+
+      :
+
+      ""
+    }
+
   </div>
 
   <div class="compare-price">
@@ -263,6 +337,21 @@ function renderCompare(query){
     <div class="supplier-rate">
       ₹${b?.invoice || "-"}
     </div>
+
+    ${
+      discount > 0 && b
+      ?
+
+      `
+      <div class="compare-discount">
+        ₹${discountB}
+      </div>
+      `
+
+      :
+
+      ""
+    }
 
   </div>
 
