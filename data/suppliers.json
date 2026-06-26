@@ -5121,9 +5121,8 @@
    "searchKey": "tube37512packedbr"
  }
 ]
-}
-{
-  "suppliers": { "kanha": {
+},
+ "kanha": {
 
       "name":"KANHA june",
 
@@ -7570,6 +7569,6 @@
    "invoice": "32205",
    "searchKey": "31540zr21sportdrivesuvtl115yxlcalm"
  },
-]}}
+]}
 }
 }
